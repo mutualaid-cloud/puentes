@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Puentes de Poder Comunitario - Guía Interactiva</title>
   
-  <!-- 3. Favicon -->
-  <link rel="icon" type="image/png" href="assets/logo.png">
+  <!-- Favicon corregido -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/logo.png">
+  <link rel="shortcut icon" href="assets/logo.png">
 
   <!-- Librería Panzoom -->
   <script src="https://unpkg.com/@panzoom/panzoom@4.5.1/dist/panzoom.min.js"></script>
@@ -15,10 +16,10 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; overflow: hidden; height: 100vh; }
 
-    /* 3. Logo en la esquina superior derecha */
+    /* Logo en la esquina superior derecha (agrandado) */
     .top-logo {
       position: absolute; top: 15px; right: 15px; z-index: 100;
-      height: 50px; width: auto;
+      height: 80px; width: auto;
       filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
     }
 
@@ -35,7 +36,7 @@
     }
     .controls button:hover { background: #501f01; }
 
-    /* 1. Contenedor con Background personalizado */
+    /* Contenedor con Background personalizado */
     #viewport { 
       width: 100vw; height: 100vh; cursor: grab; 
       background-image: url('assets/background.png');
@@ -49,9 +50,10 @@
     /* SVG del Puente y Conexiones */
     svg.map-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
     
-    /* 2. Colores de Líneas actualizados */
+    /* Estilos de líneas */
     path.bridge-path { stroke: #702C02; stroke-width: 8; fill: none; stroke-dasharray: 8 4; }
     path.branch-path { stroke: #ffdd1c; stroke-width: 5; fill: none; stroke-dasharray: 6 4; }
+    path.green-branch-path { stroke: #246302; stroke-width: 5; fill: none; stroke-dasharray: 6 4; }
 
     /* Nodos e Hitos */
     .node {
@@ -60,9 +62,11 @@
       display: flex; align-items: center; justify-content: center;
       color: white; font-weight: bold; font-size: 18px; cursor: pointer;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.2s;
+      text-decoration: none;
     }
     .node:hover { transform: translate(-50%, -50%) scale(1.2); }
     .node-main { background: #702C02; border: 2px solid #ffffff; }
+    .node-green { background: #246302; border: 2px solid #ffffff; width: 45px; height: 45px; }
     .node-branch { background: #ffdd1c; color: #333; width: 40px; height: 40px; font-size: 14px; }
 
     /* Etiquetas del Mapa */
@@ -72,8 +76,9 @@
       border-radius: 6px; font-size: 13px; font-weight: bold; color: #702C02;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     }
+    .node-label-green { color: #246302; }
 
-    /* 5. Ventana Modal Centrada con Bordes Redondeados */
+    /* Ventana Modal Centrada */
     .modal-overlay {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
       background: rgba(0, 0, 0, 0.5); z-index: 200;
@@ -83,10 +88,11 @@
     .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
     .modal-content {
-      background: white; width: 90%; max-width: 600px;
+      background: white; width: 90%; max-width: 700px;
       padding: 35px 30px 30px 30px; border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.25);
       position: relative; transform: translateY(-20px); transition: transform 0.3s ease;
+      max-height: 85vh; overflow-y: auto;
     }
     .modal-overlay.active .modal-content { transform: translateY(0); }
 
@@ -103,7 +109,7 @@
 </head>
 <body>
 
-  <!-- 3. Logo en la esquina superior derecha -->
+  <!-- Logo de la esquina superior derecha (Agrandado) -->
   <img src="assets/logo.png" alt="Logo" class="top-logo">
 
   <!-- Controles manuales -->
@@ -122,36 +128,50 @@
         <!-- Arco del Puente Principal (#702C02) -->
         <path d="M 100 500 Q 700 200 1300 500" class="bridge-path" />
         
-        <!-- Lineas Secundarias (#ffdd1c) -->
-        <path d="M 400 390 L 350 250" class="branch-path" />
+        <!-- Nueva línea verde (#246302) que sale desde A (100,500) hasta Actividad (250,380) -->
+        <path d="M 100 500 L 250 380" class="green-branch-path" />
+
+        <!-- Sub-rama amarilla (#ffdd1c) que sale desde Actividad (250,380) hasta Guía Camino (380,260) -->
+        <path d="M 250 380 L 380 260" class="branch-path" />
+        
+        <!-- Línea secundaria en C -->
         <path d="M 1000 390 L 1100 250" class="branch-path" />
       </svg>
 
-      <!-- 4. Nodos Principales A, B, C -->
+      <!-- Nodos Principales A, B, C -->
       <div class="node node-main" style="left: 100px; top: 500px;" data-x="100" data-y="500" 
-           data-title="Etapa A" 
+           data-title="A - Ofresco Mí Presencia Plena y Genuina" 
            data-desc="Antes de realizar cualquier acción en la prevención del suicidio, se requiere un ejercicio de introspección personal. Bajo la certeza de que nadie da lo que no tiene, conectar con uno mismo es el punto de partida para desarrollar la presencia plena que el otro necesita. Solo cuando contamos con esa capacidad interna logramos constituirnos en un alojamiento afectivo genuino frente a quien sufre su existencia, siendo un sostén firme en el momento más delicado: cuando la persona contempla renunciar a la vida.">
         A <span class="node-label">Ofresco Mí Presencia Plena y Genuina</span>
       </div>
 
+      <!-- Punto Verde (#246302): Actividad sobre Identidad -->
+      <div class="node node-green" style="left: 250px; top: 380px;" data-x="250" data-y="380"
+           data-title="Actividad sobre Identidad"
+           data-is-embed="true">
+        ✦ <span class="node-label node-label-green">Actividad sobre Identidad</span>
+      </div>
+
+      <!-- Botón Redondo Amarillo: Guía Camino hacia mí (Redirección externa) -->
+      <a href="https://script.google.com/macros/s/AKfycbwxvJgDSA3Iu0wvTGMUMXni5ILPQ2XpuS17ZW4YuH5tfQcPABS9Zb0FFd3yVTKnBWh99Q/exec" 
+         target="_blank" rel="noopener" 
+         class="node node-branch" style="left: 380px; top: 260px;">
+        ➔ <span class="node-label">Guía Camino hacia mí</span>
+      </a>
+
       <div class="node node-main" style="left: 700px; top: 350px;" data-x="700" data-y="350" 
-           data-title="Etapa B" 
+           data-title="B - Motivando a Actores Comunitarios a ser Puente" 
            data-desc="Esta guía brinda una orientación práctica para acompañar a personas interesadas en brindar contención a quienes atraviesan una crisis existencial o contemplan el suicidio.&#10;Sus destinatarios principales son los actores comunitarios —como referentes vecinales, de fe, clubes deportivos y depositarios de saberes tradicionales— quienes, desde la confianza y la cercanía, pueden convertirse en un puente vivo entre el dolor de un vecino, la comunidad que lo abraza y el sistema de salud.">
         B <span class="node-label">Motivando a Actores Comunitarios a ser Puente</span>
       </div>
 
       <div class="node node-main" style="left: 1300px; top: 500px;" data-x="1300" data-y="500" 
-           data-title="Etapa C" 
+           data-title="C - Promoción de lo vital e intervención situacional" 
            data-desc="Propuesta operativa de AAFASUAC (Protocolo en territorio):&#10;- Resguardar la privacidad de la persona y la seguridad del entorno; acompañar sin invadir.&#10;- Explorar la presencia de ideación o planificación suicida, el acceso a medios letales y la solidez de la red de apoyo.&#10;- Elaborar un plan de contención in situ con la persona">
         C <span class="node-label">Promoción de lo vital e intervención situacional</span>
       </div>
 
-      <!-- Ramas Secundarias -->
-      <div class="node node-branch" style="left: 350px; top: 250px;" data-x="350" data-y="250" 
-           data-title="Dato Extra" data-desc="Información complementaria sobre la introspección personal.">
-        + <span class="node-label">Autochequeo</span>
-      </div>
-
+      <!-- Rama Secundaria C -->
       <div class="node node-branch" style="left: 1100px; top: 250px;" data-x="1100" data-y="250" 
            data-title="Dato Extra" data-desc="Detalles adicionales sobre la red de asistencia.">
         + <span class="node-label">Recursos Locales</span>
@@ -160,14 +180,26 @@
     </div>
   </div>
 
-  <!-- 5. Ventana Modal Centrada -->
+  <!-- Ventana Modal Centrada -->
   <div id="modal-overlay" class="modal-overlay">
     <div class="modal-content">
       <button class="close-btn" id="btn-close">&times;</button>
-      <h2 id="modal-title" class="modal-title">Título de la Etapa</h2>
-      <div id="modal-body" class="modal-body">Descripción...</div>
+      <h2 id="modal-title" class="modal-title">Título</h2>
+      <div id="modal-body" class="modal-body">Cargando...</div>
     </div>
   </div>
+
+  <!-- HTML del Embed de Canva para reutilizar -->
+  <template id="canva-embed-template">
+    <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1em; margin-bottom: 0.9em; overflow: hidden; border-radius: 8px; will-change: transform;">
+      <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0; margin: 0;"
+        src="https://www.canva.com/design/DAHY8mNb2Zc/ueUB9g-3JLhAjzbjBXNkyw/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+      </iframe>
+    </div>
+    <a href="https://www.canva.com/design/DAHY8mNb2Zc/ueUB9g-3JLhAjzbjBXNkyw/view?utm_content=DAHY8mNb2Zc&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener" style="color: #246302; font-weight: bold; text-decoration: underline;">
+      Introspección inicial: Respóndete estas preguntas con absoluta sinceridad y respeto a ti mismo: ¿Quiero hacer ese acercamiento o me pesa? ¿Me motiva la claridad o el sobre esfuerzo? ¿Lo hago desde mi Ser Integral o porque creo que debo hacerlo, aunque no...
+    </a>
+  </template>
 
   <script>
     const elem = document.getElementById('scene');
@@ -183,7 +215,6 @@
 
     viewport.addEventListener('wheel', panzoom.zoomWithWheel);
 
-    // Centrado de la cámara hacia el nodo seleccionado
     function focusNode(x, y, scale = 1.8) {
       const viewportWidth = viewport.clientWidth;
       const viewportHeight = viewport.clientHeight;
@@ -198,17 +229,28 @@
     // Interacción al hacer clic en un Nodo
     document.querySelectorAll('.node').forEach(node => {
       node.addEventListener('click', (e) => {
+        // Ignorar redirecciones directas de tipo link
+        if (node.tagName.toLowerCase() === 'a') return;
+
         e.stopPropagation();
         const x = parseFloat(node.getAttribute('data-x'));
         const y = parseFloat(node.getAttribute('data-y'));
         const title = node.getAttribute('data-title');
-        const desc = node.getAttribute('data-desc');
+        const isEmbed = node.getAttribute('data-is-embed');
 
         focusNode(x, y, 1.8);
 
-        // Despliega la ventana modal centrada
         document.getElementById('modal-title').innerText = title;
-        document.getElementById('modal-body').innerText = desc;
+        
+        const modalBody = document.getElementById('modal-body');
+        if (isEmbed === "true") {
+          const template = document.getElementById('canva-embed-template');
+          modalBody.innerHTML = '';
+          modalBody.appendChild(template.content.cloneNode(true));
+        } else {
+          modalBody.innerText = node.getAttribute('data-desc');
+        }
+
         document.getElementById('modal-overlay').classList.add('active');
       });
     });
