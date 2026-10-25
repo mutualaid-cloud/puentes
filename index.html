@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Puentes de Poder Comunitario - Guía Interactiva</title>
   
-  <!-- Favicon corregido -->
+  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="assets/logo.png">
   <link rel="shortcut icon" href="assets/logo.png">
 
@@ -16,23 +16,23 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; overflow: hidden; height: 100vh; }
 
-    /* Logo en la esquina superior derecha (agrandado) */
+    /* Logo en la esquina superior derecha */
     .top-logo {
       position: absolute; top: 15px; right: 15px; z-index: 100;
-      height: 80px; width: auto;
+      height: 70px; width: auto;
       filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
     }
 
     /* Barra Superior de Control */
     .controls {
       position: absolute; top: 15px; left: 15px; z-index: 100;
-      background: rgba(255, 255, 255, 0.95); padding: 10px 15px;
+      background: rgba(255, 255, 255, 0.95); padding: 8px 12px;
       border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      display: flex; gap: 10px; align-items: center;
+      display: flex; gap: 8px; align-items: center;
     }
     .controls button {
       padding: 8px 12px; border: none; background: #702C02; color: white;
-      border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s;
+      border-radius: 6px; cursor: pointer; font-weight: bold; transition: background 0.2s;
     }
     .controls button:hover { background: #501f01; }
 
@@ -47,11 +47,19 @@
     /* Área de Dibujo del Mapa */
     #scene { width: 1400px; height: 800px; position: relative; }
 
+    /* 1. Título dinámico que acompaña al mapa */
+    .map-title {
+      position: absolute; top: 120px; left: 50%; transform: translateX(-50%);
+      font-size: 42px; font-weight: 800; color: #4a1f02; text-transform: uppercase;
+      letter-spacing: 2px; text-shadow: 0 2px 4px rgba(255,255,255,0.8);
+      white-space: nowrap; pointer-events: none; z-index: 2;
+    }
+
     /* SVG del Puente y Conexiones */
     svg.map-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
     
-    /* Estilos de líneas */
-    path.bridge-path { stroke: #702C02; stroke-width: 8; fill: none; stroke-dasharray: 8 4; }
+    /* 3. Lógica visual de líneas de puente */
+    path.bridge-path { stroke: #702C02; stroke-width: 8; fill: none; stroke-dasharray: 10 6; stroke-linecap: round; }
     path.branch-path { stroke: #ffdd1c; stroke-width: 5; fill: none; stroke-dasharray: 6 4; }
     path.green-branch-path { stroke: #246302; stroke-width: 5; fill: none; stroke-dasharray: 6 4; }
 
@@ -89,7 +97,7 @@
 
     .modal-content {
       background: white; width: 90%; max-width: 700px;
-      padding: 35px 30px 30px 30px; border-radius: 16px;
+      padding: 30px; border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.25);
       position: relative; transform: translateY(-20px); transition: transform 0.3s ease;
       max-height: 85vh; overflow-y: auto;
@@ -105,11 +113,23 @@
 
     .modal-title { color: #702C02; margin-bottom: 15px; font-size: 20px; }
     .modal-body { color: #444; line-height: 1.6; font-size: 15px; white-space: pre-line; }
+
+    /* 2. Optimización y Versión Clara para Celulares */
+    @media (max-width: 768px) {
+      .top-logo { height: 45px; top: 10px; right: 10px; }
+      .controls { top: 10px; left: 10px; padding: 6px 10px; }
+      .controls button { font-size: 12px; padding: 6px 10px; }
+      .map-title { font-size: 26px; top: 90px; }
+      .node-label { font-size: 11px; padding: 3px 6px; top: 48px; }
+      .modal-content { padding: 20px; width: 95%; max-height: 90vh; }
+      .modal-title { font-size: 17px; }
+      .modal-body { font-size: 14px; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Logo de la esquina superior derecha (Agrandado) -->
+  <!-- Logo de la esquina superior derecha -->
   <img src="assets/logo.png" alt="Logo" class="top-logo">
 
   <!-- Controles manuales -->
@@ -123,19 +143,25 @@
   <div id="viewport">
     <div id="scene">
       
+      <!-- 1. Título dinámico dentro del mapa -->
+      <h1 class="map-title">PUENTES DE PODER COMUNITARIO</h1>
+
       <!-- Fondo vectorial: Dibujo del puente y ramificaciones -->
       <svg class="map-bg">
         <!-- Arco del Puente Principal (#702C02) -->
         <path d="M 100 500 Q 700 200 1300 500" class="bridge-path" />
         
-        <!-- Nueva línea verde (#246302) que sale desde A (100,500) hasta Actividad (250,380) -->
+        <!-- Rama Verde desde A (100,500) hasta Actividad (250,380) -->
         <path d="M 100 500 L 250 380" class="green-branch-path" />
 
-        <!-- Sub-rama amarilla (#ffdd1c) que sale desde Actividad (250,380) hasta Guía Camino (380,260) -->
+        <!-- Sub-rama amarilla desde Actividad (250,380) hasta Guía Camino (380,260) -->
         <path d="M 250 380 L 380 260" class="branch-path" />
+
+        <!-- 4. Rama Verde desde B (700,350) hacia Alfabetización (700,210) -->
+        <path d="M 700 350 L 700 210" class="green-branch-path" />
         
-        <!-- Línea secundaria en C -->
-        <path d="M 1000 390 L 1100 250" class="branch-path" />
+        <!-- Sub-rama amarilla hacia Recursos Locales cerca de C -->
+        <path d="M 1050 430 L 1100 280" class="branch-path" />
       </svg>
 
       <!-- Nodos Principales A, B, C -->
@@ -145,26 +171,35 @@
         A <span class="node-label">Ofresco Mí Presencia Plena y Genuina</span>
       </div>
 
-      <!-- Punto Verde (#246302): Actividad sobre Identidad -->
+      <!-- Punto Verde (A): Actividad sobre Identidad -->
       <div class="node node-green" style="left: 250px; top: 380px;" data-x="250" data-y="380"
            data-title="Actividad sobre Identidad"
-           data-is-embed="true">
+           data-embed-id="canva-a">
         ✦ <span class="node-label node-label-green">Actividad sobre Identidad</span>
       </div>
 
-      <!-- Botón Redondo Amarillo: Guía Camino hacia mí (Redirección externa) -->
+      <!-- Botón Redondo Amarillo: Guía Camino hacia mí -->
       <a href="https://script.google.com/macros/s/AKfycbwxvJgDSA3Iu0wvTGMUMXni5ILPQ2XpuS17ZW4YuH5tfQcPABS9Zb0FFd3yVTKnBWh99Q/exec" 
          target="_blank" rel="noopener" 
          class="node node-branch" style="left: 380px; top: 260px;">
         ➔ <span class="node-label">Guía Camino hacia mí</span>
       </a>
 
+      <!-- Punto Principal B -->
       <div class="node node-main" style="left: 700px; top: 350px;" data-x="700" data-y="350" 
            data-title="B - Motivando a Actores Comunitarios a ser Puente" 
            data-desc="Esta guía brinda una orientación práctica para acompañar a personas interesadas en brindar contención a quienes atraviesan una crisis existencial o contemplan el suicidio.&#10;Sus destinatarios principales son los actores comunitarios —como referentes vecinales, de fe, clubes deportivos y depositarios de saberes tradicionales— quienes, desde la confianza y la cercanía, pueden convertirse en un puente vivo entre el dolor de un vecino, la comunidad que lo abraza y el sistema de salud.">
         B <span class="node-label">Motivando a Actores Comunitarios a ser Puente</span>
       </div>
 
+      <!-- 4. Punto Verde (B): Alfabetización y sensibilización comunitaria -->
+      <div class="node node-green" style="left: 700px; top: 210px;" data-x="700" data-y="210"
+           data-title="Alfabetización y sensibilización comunitaria"
+           data-embed-id="canva-b">
+        ✦ <span class="node-label node-label-green">Alfabetización y sensibilización comunitaria</span>
+      </div>
+
+      <!-- Punto Principal C -->
       <div class="node node-main" style="left: 1300px; top: 500px;" data-x="1300" data-y="500" 
            data-title="C - Promoción de lo vital e intervención situacional" 
            data-desc="Propuesta operativa de AAFASUAC (Protocolo en territorio):&#10;- Resguardar la privacidad de la persona y la seguridad del entorno; acompañar sin invadir.&#10;- Explorar la presencia de ideación o planificación suicida, el acceso a medios letales y la solidez de la red de apoyo.&#10;- Elaborar un plan de contención in situ con la persona">
@@ -172,7 +207,7 @@
       </div>
 
       <!-- Rama Secundaria C -->
-      <div class="node node-branch" style="left: 1100px; top: 250px;" data-x="1100" data-y="250" 
+      <div class="node node-branch" style="left: 1100px; top: 280px;" data-x="1100" data-y="280" 
            data-title="Dato Extra" data-desc="Detalles adicionales sobre la red de asistencia.">
         + <span class="node-label">Recursos Locales</span>
       </div>
@@ -189,25 +224,42 @@
     </div>
   </div>
 
-  <!-- HTML del Embed de Canva para reutilizar -->
-  <template id="canva-embed-template">
-    <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1em; margin-bottom: 0.9em; overflow: hidden; border-radius: 8px; will-change: transform;">
+  <!-- Plantilla Embed Canva (A) -->
+  <template id="canva-a">
+    <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1em; margin-bottom: 0.9em; overflow: hidden; border-radius: 8px;">
       <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0; margin: 0;"
         src="https://www.canva.com/design/DAHY8mNb2Zc/ueUB9g-3JLhAjzbjBXNkyw/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
       </iframe>
     </div>
+    <a href="https://www.canva.com/design/DAHY8mNb2Zc/ueUB9g-3JLhAjzbjBXNkyw/view?utm_content=DAHY8mNb2Zc&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener" style="color: #246302; font-weight: bold; text-decoration: underline;">
+      Introspección inicial: Respóndete estas preguntas con absoluta sinceridad y respeto a ti mismo: ¿Quiero hacer ese acercamiento o me pesa? ¿Me motiva la claridad o el sobre esfuerzo? ¿Lo hago desde mi Ser Integral o porque creo que debo hacerlo, aunque no...
+    </a>
+  </template>
+
+  <!-- 4. Plantilla Embed Canva (B) -->
+  <template id="canva-b">
+    <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1em; margin-bottom: 0.9em; overflow: hidden; border-radius: 8px;">
+      <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0; margin: 0;"
+        src="https://www.canva.com/design/DAHY98KVsVY/Xlxq0Bct9Y1F2CGowFJGMw/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+      </iframe>
+    </div>
+    <a href="https://www.canva.com/design/DAHY98KVsVY/Xlxq0Bct9Y1F2CGowFJGMw/view?utm_content=DAHY98KVsVY&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener" style="color: #246302; font-weight: bold; text-decoration: underline;">
+      Alfabetización y sensibilización comunitaria
+    </a>
   </template>
 
   <script>
     const elem = document.getElementById('scene');
     const viewport = document.getElementById('viewport');
     
-    // Configuración de Panzoom
+    // Configuración de Panzoom adaptativa para móviles
+    const initialScale = window.innerWidth < 768 ? 0.5 : 0.8;
+
     const panzoom = Panzoom(elem, {
       maxScale: 3,
-      minScale: 0.5,
+      minScale: 0.3,
       contain: 'outside',
-      startScale: 0.8
+      startScale: initialScale
     });
 
     viewport.addEventListener('wheel', panzoom.zoomWithWheel);
@@ -223,25 +275,24 @@
       panzoom.pan(targetX, targetY, { animate: true });
     }
 
-    // Interacción al hacer clic en un Nodo
+    // Interacción al hacer clic en los Nodos
     document.querySelectorAll('.node').forEach(node => {
       node.addEventListener('click', (e) => {
-        // Ignorar redirecciones directas de tipo link
         if (node.tagName.toLowerCase() === 'a') return;
 
         e.stopPropagation();
         const x = parseFloat(node.getAttribute('data-x'));
         const y = parseFloat(node.getAttribute('data-y'));
         const title = node.getAttribute('data-title');
-        const isEmbed = node.getAttribute('data-is-embed');
+        const embedId = node.getAttribute('data-embed-id');
 
-        focusNode(x, y, 1.8);
+        focusNode(x, y, window.innerWidth < 768 ? 1.4 : 1.8);
 
         document.getElementById('modal-title').innerText = title;
         
         const modalBody = document.getElementById('modal-body');
-        if (isEmbed === "true") {
-          const template = document.getElementById('canva-embed-template');
+        if (embedId) {
+          const template = document.getElementById(embedId);
           modalBody.innerHTML = '';
           modalBody.appendChild(template.content.cloneNode(true));
         } else {
@@ -261,7 +312,6 @@
     document.getElementById('btn-zoom-in').addEventListener('click', panzoom.zoomIn);
     document.getElementById('btn-zoom-out').addEventListener('click', panzoom.zoomOut);
     
-    // Cerrar modal al presionar la 'X' o fuera del cuadro
     document.getElementById('btn-close').addEventListener('click', () => {
       document.getElementById('modal-overlay').classList.remove('active');
     });
